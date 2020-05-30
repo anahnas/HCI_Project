@@ -1,0 +1,259 @@
+﻿<Window x:Class="HCIProject1._2.WindowResurs"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HCIProject1._2"
+        mc:Ignorable="d"
+        Title="Dodaj resurs" Height="450" Width="800" Icon="Images/resources.png"
+        WindowStartupLocation="CenterScreen">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+    </Window.CommandBindings>
+    <Border Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="182*"/>
+                <ColumnDefinition Width="32*"/>
+                <ColumnDefinition Width="173*"/>
+                <ColumnDefinition Width="16*"/>
+                <ColumnDefinition Width="164*"/>
+                <ColumnDefinition Width="183*"/>
+                <ColumnDefinition Width="15*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="38*"/>
+                <RowDefinition Height="50*"/>
+                <RowDefinition Height="122*"/>
+                <RowDefinition Height="37*"/>
+                <RowDefinition Height="36*"/>
+                <RowDefinition Height="37*"/>
+                <RowDefinition Height="72*"/>
+
+
+            </Grid.RowDefinitions>
+            <TextBlock ToolTip="Zvjezdica * označava da je polje obavezno popuniti." Grid.Row="1" Grid.Column="1" Margin="10, 5, 0, 0" HorizontalAlignment="Left" FontSize="14px" Width="55">Oznaka*:</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="3" TextChanged="xOznaka_TextChanged" Name="xOznaka" >
+
+                <TextBox.Text>
+                    <Binding Path="Oznaka" UpdateSourceTrigger="LostFocus">
+                        <Binding.ValidationRules>
+                            <local:ValidacijaOznakeResursa ValidationStep="RawProposedValue"/>
+
+                        </Binding.ValidationRules>
+                    </Binding>
+
+                </TextBox.Text>
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0 0 20 0">
+                                <Border Background="Red" Width="20" Height="20" CornerRadius="10" ToolTip="{Binding Path=/ErrorContent}">
+                                    <TextBlock  Text="!" VerticalAlignment="Center" HorizontalAlignment="center" FontWeight="Bold" Foreground="white" />
+
+                                </Border>
+                                <TextBlock Margin="5 0 0 0" Foreground="Red" Text="{Binding [0].ErrorContent}"/>
+
+                            </StackPanel>
+                            <Border BorderBrush="Red" BorderThickness="1" Margin="5,0" Width="174" ToolTip="{Binding Path=/ErrorContent}">
+                                <AdornedElementPlaceholder Name="textBox"/>
+                            </Border>
+                        </StackPanel>
+
+                    </ControlTemplate>
+
+                </Validation.ErrorTemplate>
+            </TextBox>
+
+            <TextBlock ToolTip="Zvjezdica * označava da je polje obavezno popuniti." Grid.Row="1" Grid.Column="5" Margin="10,5,0,0" HorizontalAlignment="Left" FontSize="14px" Width="32">Ime*:</TextBlock>
+            <TextBox Grid.Row="1" Grid.Column="6" TextChanged="xIme_TextChanged" Name="xIme">
+                <TextBox.Text>
+                    <Binding Path="Ime" UpdateSourceTrigger="LostFocus">
+                        <Binding.ValidationRules>
+                            <local:ValidacijaResursa ValidationStep="RawProposedValue"/>
+
+                        </Binding.ValidationRules>
+                    </Binding>
+
+                </TextBox.Text>
+                <Validation.ErrorTemplate>
+                    <ControlTemplate>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0 0 20 0">
+                                <Border Background="Red" Width="20" Height="20" CornerRadius="10" ToolTip="{Binding ElementName=Ime, Path=Ime.(Validation.Errors)[0].ErrorContent}">
+                                    <TextBlock Text="!" VerticalAlignment="center" HorizontalAlignment="center" FontWeight="Bold" Foreground="white"></TextBlock>
+
+                                </Border>
+                                <TextBlock Margin="5 0 0 0" Foreground="Red" Text="{Binding [0].ErrorContent}"/>
+
+                            </StackPanel>
+                            <Border BorderBrush="Red" BorderThickness="1" Margin="5,0" Width="174" ToolTip="{Binding Path=/ErrorContent}">
+                                <AdornedElementPlaceholder Name="textBox"/>
+                            </Border>
+                        </StackPanel>
+
+                    </ControlTemplate>
+
+                </Validation.ErrorTemplate>
+
+
+            </TextBox>
+
+            <TextBlock Grid.Row="2" Grid.Column="1" Margin="10,5,0,0" HorizontalAlignment="Left" FontSize="14px" Width="31">Opis:</TextBlock>
+            <TextBox Grid.Row="2" Grid.Column="3" Name="xOpis"  Margin="0,10,0,0" Text="{Binding Path=Opis,UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+            <TextBlock ToolTip="Zvjezdica * označava da je polje obavezno popuniti." Grid.Row="2" Grid.Column="5" Margin="10,5,0,0" HorizontalAlignment="Left" FontSize="14px" Width="28">Tip*:</TextBlock>
+            <ComboBox  ToolTip ="Kada kliknete na padajucu listu neophodno je da izaberete jedan tip resursa. " Name="tip" Grid.Column="6" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Top" Width="187" Height="30" Margin="0,10,0,0" Grid.ColumnSpan="2" ItemsSource="{Binding TipoviResursa}"  SelectionChanged="tip_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding ImeResursa}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <StackPanel Grid.Column="3" Grid.Row="3" Orientation="Vertical">
+                <TextBlock  HorizontalAlignment="Center">Upotrebljene etikete</TextBlock>
+                <ListView ToolTipService.ShowDuration="20000"  ToolTip="Ovde se nalaze etikete ugrožene vrste koje ste izabrali."  x:Name="UpotrebljeneEtikete"  ItemsSource="{Binding IskorisceneEtikete}" VerticalAlignment="Stretch" Height="106">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Oznaka}"></TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            <!-- <TextBlock Grid.Row="3" Grid.Column="1" Margin="10,5,0,0" HorizontalAlignment="Left" FontSize="14px" Width="50">Etiketa*:</TextBlock>
+            <TextBox Grid.Row="3" Grid.Column="3" Margin="0,10,0,0"></TextBox>-->
+            <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Vertical">
+                <TextBlock  HorizontalAlignment="Center">Slobodne etikete</TextBlock>
+                <ListView ToolTipService.ShowDuration="20000"  ToolTip="Ovde se nalaze etikete koje možete da dodelite ugroženoj vrsti." Background="LightGray"  x:Name="NeupotrebljeneEtikete" Grid.Column="2" ItemsSource="{Binding Path=Etikete}" Height="104">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Oznaka}"></TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+
+            <Grid Grid.Column="2" Grid.Row="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Button ToolTipService.ShowDuration="20000"  ToolTip="Pritiskom na strelicu će etiketa iz &#013;slobodnih etiketa preći u upotrebljene etikete."  x:Name="AddToUsed" Grid.Row="1" Background="{x:Null}" BorderBrush="{x:Null}" Click="DodajUKoriscene_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Grid.Row="0" Source="Images/strelicadesno.jpg"></Image>
+                    </StackPanel>
+                </Button>
+
+                <Button ToolTipService.ShowDuration="20000"  ToolTip="Pritiskom na strelicu će etiketa iz &#013;upotrebljenih etiketa preći u slobodne etikete."  x:Name="AddToUnusedTags" Grid.Row="2" BorderBrush="{x:Null}" Background="{x:Null}" Click="DodajUNeiskoriscene_Click">
+
+                    <StackPanel Orientation="Horizontal">
+                        <Image Grid.Row="2" Source="Images/strelicalevo.jpg"></Image>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+
+            <TextBlock Grid.Row="3" Grid.Column="5" Margin="10,5,0,0" HorizontalAlignment="Left" FontSize="14px" Width="47">Ikonica:</TextBlock>
+            <Grid Margin="0,0,0,3" Grid.Column="6" Grid.Row="3" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+
+                </Grid.ColumnDefinitions>
+                <!--Default ikonica-->
+                <Image x:Name="image" ToolTip="Podrzumijevana ikonica za resurse. U slucaju da je zelite promijeniti klikite na dugme Odaberi." Margin="5"  Stretch="Fill" Grid.Column="0"  Source="{Binding Path=IkonicaResursa, UpdateSourceTrigger=PropertyChanged}"/>
+                <StackPanel VerticalAlignment="Center" Grid.Column="1" HorizontalAlignment="Left">
+                    <Button Click="btnOdaberi_Click" ToolTip="Pritiskom na ovo dugme otvorice se dijalog u kome odabirate ikonicu resursa." Margin="5,0,0,5" Width="75" Name="btnOdaberi">Odaberi</Button>
+                    <Button Click="btnOdbaci_Click" ToolTip="Pritiskom na ovo dugme bice postavljena podrazumijevana ikonica, a odbacena odabrana." Margin="5,0,0,5" Width="75" >Odbaci</Button>
+
+                </StackPanel>
+            </Grid>
+
+            <!--Frekvencija pojavljivanja-->
+            <TextBlock Grid.Column="1" Grid.Row="4" FontSize="14px" Margin="5,10,0,0" HorizontalAlignment="Left" Width="151">Frekvencija pojavljivanja:</TextBlock>
+            <ComboBox x:Name="comboFrekv" Grid.Column="3" HorizontalAlignment="Left" Grid.Row="4" Width="153" RenderTransformOrigin="-0.046,0.75" Margin="10,5,0,5" Text="{Binding Path=Frekvencijaa, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Frekvencijaa}" >
+                <ComboBoxItem>Rijedak</ComboBoxItem>
+                <ComboBoxItem>Čest</ComboBoxItem>
+                <ComboBoxItem>Univerzalan</ComboBoxItem>
+            </ComboBox>
+            <TextBlock Grid.Column="5" Grid.Row="4" FontSize="14px" HorizontalAlignment="left" Margin="5,10,0,0" Width="110">Strateška važnost:</TextBlock>
+            <StackPanel ToolTip="Pritiskom na kruzic Da oznacili ste da je resurs od strateske vaznosti, a na dugme Ne, da nije" Orientation="Horizontal" Margin="0,10" Grid.Column="6" Grid.Row="4" HorizontalAlignment="Stretch">
+                <RadioButton x:Name="StrateskaDa" Content="Da" Margin="20,0,40,0" />
+                <RadioButton x:Name="StrateskaNe" Content="Ne" Margin="20,0,40,0" IsChecked="True"/>
+            </StackPanel>
+
+            <TextBlock Grid.Column="1" Grid.Row="5" FontFamily="14px" HorizontalAlignment="Left" Margin="5,10,0,0" FontSize="14px" Width="62">Obnovljiv:</TextBlock>
+           <!-- <RadioButton x:Name="ObnovljivDA" Content="Da" Grid.Column="3" HorizontalAlignment="Left" Margin="10,11,0,0" Grid.Row="5" VerticalAlignment="Top" Height="15" Width="34" IsChecked="{Binding Obnovljiv}"/>
+            <RadioButton x:Name="ObnovljivNE" Content="Ne" Grid.Column="3" HorizontalAlignment="Left" Margin="80,11,0,0" Grid.Row="5" VerticalAlignment="Top" Height="15" Width="34" IsChecked="True"/>-->
+            <StackPanel ToolTip="Pritiskom na kruzic Da oznacili ste da je resurs od strateske vaznosti, a na dugme Ne, da nije" Orientation="Horizontal" Grid.Column="3" Grid.Row="5" HorizontalAlignment="Stretch"   Margin="0 5 0 10" >
+                <RadioButton x:Name="ObnovljivDA" Content="Da"  Margin="20 0 40 0"/>
+                <RadioButton x:Name="ObnovljivNE" Content="Ne"  IsChecked="True" />
+            </StackPanel>
+
+            <TextBlock Grid.Column="5" Grid.Row="5" FontSize="14px" Margin="5,10,18,0">Moguća eksploatacija?</TextBlock>
+            <RadioButton x:Name="eksploatacijaDA" Content="Da" Grid.Column="6" HorizontalAlignment="Left" Margin="20,11,0,0" Grid.Row="5" VerticalAlignment="Top" Height="15" Width="34"/>
+            <RadioButton x:Name="eksploatacijaNE" Content="Ne" Grid.Column="6" HorizontalAlignment="Left" Margin="116,11,0,0" Grid.Row="5" VerticalAlignment="Top" Height="15" Width="34" IsChecked="True"/>
+
+            <TextBlock Grid.Column="1" Grid.Row="6" FontSize="14px" Margin="5, 10, 5, 0">Jedinica mjere:</TextBlock>
+            <ComboBox x:Name="comboJedinica" Grid.Column="3" HorizontalAlignment="Left" Grid.Row="6" VerticalAlignment="Top" Width="153" Height="27" Margin="10,5,0,0" Text="{Binding Path=Jedinicaa, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Jedinicaa}">
+                <ComboBoxItem>Merica</ComboBoxItem>
+                <ComboBoxItem>Barel</ComboBoxItem>
+                <ComboBoxItem>Kilogram</ComboBoxItem>
+                <ComboBoxItem>Tona</ComboBoxItem>
+
+            </ComboBox>
+
+            <TextBlock Grid.Column="5" Grid.Row="6" FontSize="14px" HorizontalAlignment="Left" Margin="5,10,5,5">Cijena:</TextBlock>
+            <StackPanel Margin="0,0,0,10" Grid.Column="6" Grid.Row="6">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="2.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox ToolTip="Ovdje unesite cijenu resursa." Name="xCijena" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="22">
+                        <TextBox.Text>
+                            <Binding Path="Cijena" UpdateSourceTrigger="LostFocus">
+                                <Binding.ValidationRules>
+                                    <local:ValidacijaCijene ValidationStep="RawProposedValue"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                        <Validation.ErrorTemplate>
+                            <ControlTemplate>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+                                        <Border Background="Red" Width="20" Height="20" CornerRadius="10" ToolTip="{Binding ElementName=Cijena, Path=Cijena.(Validation.Errors)[0].ErrorContent}">
+                                            <TextBlock Text="!" VerticalAlignment="center" HorizontalAlignment="center" FontWeight="Bold" Foreground="white"></TextBlock>
+
+                                        </Border>
+                                        <TextBlock Margin="0 0 0 0" Foreground="Red" Text="{Binding [0].ErrorContent}"/>
+
+                                    </StackPanel>
+                                    <Border BorderBrush="Red" BorderThickness="1" Margin="0,0" Width="174" ToolTip="{Binding Path=/ErrorContent}">
+                                        <AdornedElementPlaceholder Name="textBox"/>
+                                    </Border>
+                                </StackPanel>
+
+                            </ControlTemplate>
+
+                        </Validation.ErrorTemplate>
+
+
+                    </TextBox>
+                    <TextBlock ToolTip="Jedina valuta na raspolaganju je USD." Grid.Column="1" Margin="5, 2, 5,0">USD</TextBlock>
+
+                </Grid>
+            </StackPanel>
+            <TextBlock Grid.Column="1" Grid.Row="7" FontSize="14px" Margin="5,5,5,0">Datum otkrivanja:</TextBlock>
+            <DatePicker x:Name="xDateField"  Grid.Column="3" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="7" VerticalAlignment="Top" Width="153" Height="30" SelectedDate="{Binding Path=DatumOtkrivanja}"/>
+
+            <Button Name ="PotvrdiBtn"  Click="Potvrdi_Click" ToolTip="Ako se slazete sa svim sto ste naveli, pritisnite dugme Potvrdi. Moraju se prije pritiska na ovo dugme popuniti sva polja oznacena sa *." Grid.Column="5" Grid.Row="7" Width="80" Height="30" HorizontalAlignment="Right">Potvrdi</Button>
+            <Button Click="Odustani_Click" ToolTip="Pritiskom na ovo dugme nece biti dodat resurs" Grid.Column="6" Grid.Row="7" Width="80" Height="30" HorizontalAlignment="Right" >Odustani</Button>
+        </Grid>
+    </Border>
+</Window>

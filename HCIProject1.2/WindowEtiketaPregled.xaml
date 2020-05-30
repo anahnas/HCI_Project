@@ -1,0 +1,121 @@
+﻿<Window x:Class="HCIProject1._2.WindowEtiketaPregled"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HCIProject1._2"
+        mc:Ignorable="d"
+        Title="Pregled Etiketa" Height="450" Width="800" Icon="/Images/label1.png" WindowStartupLocation="CenterScreen">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Help" Executed="CommandBinding_Executed"/>
+    </Window.CommandBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid   ToolTip="Ovde su prikazane postojeće etikete. Ukoliko želite da izmijenite ili obrišete neku potrebno je da je prvo označite, pa zatim izaberete jednu od dole ponuđenih akcija." x:Name="dgrMainEtiketa" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Path=Etikete}" >
+
+            <DataGrid.Columns>
+              <!--  <DataGridTemplateColumn Header="Oznaka" Width="45" IsReadOnly="True"></DataGridTemplateColumn>-->
+                <DataGridTextColumn Width="*" Header="Oznaka" Binding="{Binding Oznaka}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                            <Setter Property="TextBlock.MaxWidth" Value="120"/>
+                            <Setter Property="TextBlock.Width" Value="120"/>
+                            <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+               <!-- <DataGridTextColumn Width="50" Header="Opis"  IsReadOnly="True"></DataGridTextColumn>-->
+                <DataGridTextColumn Width="*" Header="Opis" Binding="{Binding Opis}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                            <Setter Property="TextBlock.MaxWidth" Value="120"/>
+                            <Setter Property="TextBlock.Width" Value="120"/>
+                            <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="Boja" Width="4*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.Column="0">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding Boja2}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+
+
+            <Button ToolTip="Pritiskom na dugme otvoriće se novi prozor za dodavanje etikete." Margin="5 5 10 5" Width="91" Click="dodaj_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image  Width="20" Source="/Images/add.png" />
+                    <TextBlock FontSize="16px" Margin="5 0 0 0">Dodaj</TextBlock>
+                </StackPanel>
+            </Button>
+
+            <Button Click="izmijeni_Click" ToolTip="Pritiskom na dugme otvoriće se novi prozor za izmjenu označene etikete." x:Name="Izmeni" Margin="10 5 10 5" Width="114" >
+                <StackPanel Orientation="Horizontal">
+                    <Image  Width="20" Source="images/edit.png" />
+                    <TextBlock FontSize="16px" Margin="5 0 0 0" Width="59" >Izmijeni</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Click="obrisi_Click" ToolTip="Pritiskom na dugme označena etiketa će biti obrisana." Margin="10 5 10 5" Width="93" >
+                <StackPanel Orientation="Horizontal">
+                    <Image  Width="20" Source="/Images/delete.png" />
+                    <TextBlock FontSize="16px" Margin="5 0 0 0" Height="23" Width="51" RenderTransformOrigin="0.735,0.526">Obriši</TextBlock>
+                </StackPanel>
+            </Button>
+
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <TextBlock  FontSize="15px" ToolTip="Ukoliko želite da pronađete određene etikete resursa možete to uraditi popunjavajući polje ili polja po kojim želite da vršite pretragu." HorizontalAlignment="Center" Padding="10 10 10 0">Pronađite etikete</TextBlock>
+
+            <TextBlock FontSize="15px" Padding="10 0 0 0" Height="38">Opis</TextBlock>
+            <TextBox ToolTip="Ovde unesite ime etikete po kojem želite da vršite pretragu." Name="xIme" Margin="10 0 10 0" Height="40"></TextBox>
+
+            <TextBlock FontSize="15px" Padding="10 10 0 0" Height="46">Oznaka</TextBlock>
+            <TextBox  ToolTipService.ShowDuration="20000"  ToolTip="Ovde unesite oznaku tipa resursa po kojem želite da vršite pretragu." Name="xOznaka" Margin="10 0 10 0" Height="41"></TextBox>
+
+
+            <Border Margin="7 7 7 0" BorderThickness="0"/>
+
+            <Button Click="Pretrazi_Click_2" ToolTip="Potrebno je da kliknete ovo dugme kako bi se pretraga izvršila. Nakon što kliknete u tabeli će se pojaviti samo one etikete koje zadovoljavaju unijete vrijednosti." x:Name="Pretrazi" Margin="10 5 10 5"  Height="53" >
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="20" Source="/Images/search.png" />
+                    <TextBlock FontSize="18px" Margin="3 0 0 0">Pretraži</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button  Click="Ponisti_Click" ToolTipService.ShowDuration="20000"  x:Name="Ponisti" Margin="10 5 10 5"  Height="53">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="20" Source="/Images/cancel.png" />
+                    <TextBlock FontSize="18px" ToolTip="Klikom na ovo dugme se pretraga poništava, u tabeli se prikazuju sve postojeće etikete."  Text="Poništi pretragu"></TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+    </Grid>
+</Window>
